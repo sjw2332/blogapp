@@ -1,0 +1,17 @@
+server:
+  port: 8080 
+  
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+      
+  datasource:    driver-class-name: org.mariadb.jdbc.Driver
+    username: cos
+    password: cos1234
+    url: jdbc:mariadb://localhost:3306/cosdb?serverTimezone=Asia/Seoul
+    
+  jpa:    hibernate:      ddl-auto: none #create, none
+      naming:        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
