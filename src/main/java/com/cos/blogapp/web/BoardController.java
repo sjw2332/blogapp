@@ -50,12 +50,9 @@ public class BoardController {
 		//2. orElseThrow
 	 //exception(여기선 오류로그)를 화면에 던진다.
 		Board boardEntity = boardRepository.findById(id)
-				.orElseThrow(new Supplier<MyNotFoundException>() {
-					@Override
-					public MyNotFoundException get() {
-						return new MyNotFoundException(id+"를 못찾음");   //return시 내부적으로 throw함.
-					}
-				});
+				.orElseThrow( ()-> new MyNotFoundException(id+"못찾았땅 ㅠ") );
+					
+		
 		model.addAttribute("boardEntity",boardEntity);
 		
 		return "board/detail";
