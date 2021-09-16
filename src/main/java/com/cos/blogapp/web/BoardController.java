@@ -1,8 +1,8 @@
 package com.cos.blogapp.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cos.blogapp.domain.board.Board;
 import com.cos.blogapp.domain.board.BoardRepository;
 import com.cos.blogapp.domain.user.User;
+import com.cos.blogapp.handler.ex.MyNotFoundException;
 import com.cos.blogapp.util.Script;
 import com.cos.blogapp.web.dto.BoardSaveReqDto;
 
@@ -47,9 +48,14 @@ public class BoardController {
 //				.orElse(new Board(100,"글없어요","글없어요",null));
 		
 		//2. orElseThrow
+	 //exception(여기선 오류로그)를 화면에 던진다.
 		Board boardEntity = boardRepository.findById(id)
-				.orElseThrow(); //exception(여기선 오류로그)를 화면에 던진다.
-		
+				.orElseThrow(new Supplier<MyNotFoundException>() {
+					@Override
+					public MyNotFoundException get() {
+						return new MyNotFoundException(id+"를 못찾음");   //return시 내부적으로 throw함.
+					}
+				});
 		model.addAttribute("boardEntity",boardEntity);
 		
 		return "board/detail";
