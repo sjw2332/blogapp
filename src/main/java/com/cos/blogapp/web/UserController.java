@@ -12,18 +12,26 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cos.blogapp.domain.user.User;
 import com.cos.blogapp.domain.user.UserRepository;
+import com.cos.blogapp.handler.ex.MyAsyncNotFoundException;
+import com.cos.blogapp.handler.ex.MyNotFoundException;
 import com.cos.blogapp.util.MyAlgorithm;
 import com.cos.blogapp.util.SHA;
 import com.cos.blogapp.util.Script;
+import com.cos.blogapp.web.dto.CMRespDto;
 import com.cos.blogapp.web.dto.JoinReqDto;
 import com.cos.blogapp.web.dto.LoginReqDto;
+import com.cos.blogapp.web.dto.UserUpdateDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 @RequiredArgsConstructor
 @Controller
 public class UserController {
@@ -32,6 +40,48 @@ public class UserController {
 	private final HttpSession session;
 	
 
+	//회원정보수장
+	@PutMapping("/user/{id}")
+	public @ResponseBody CMRespDto<String> update(@PathVariable int id, @Valid @RequestBody UserUpdateDto dto, BindingResult bindingResult ){
+		
+		User principal = (User) session.getAttribute("principal");
+		
+		if(bindingResult.hasErrors()) {
+			Map<String,String> errorMap = new HashMap<>();
+			for( FieldError error: bindingResult.getFieldErrors()) {
+				errorMap.put(error.getField(), error.getDefaultMessage());
+			}
+			throw new MyAsyncNotFoundException(errorMap.toString());
+		}
+		
+		//인증
+		if (principal == null) {
+			throw new MyAsyncNotFoundException("인증되지 않았습니다.");
+		}
+		//권한
+		if(principal.getId() != id) {
+			throw new MyAsyncNotFoundException("회원정보를 수정할 권한이 없습니다.");
+		}
+		
+		User userEntity = userRepository.findById(principal.getId())
+				.orElseThrow( ()->new MyAsyncNotFoundException("회원정보를 찾을 수 없습니다"));
+		userEntity.setEmail(dto.getEmail());
+		
+		principal.setEmail(dto.getEmail());
+		session.setAttribute("principal", principal);
+			
+		return new CMRespDto<>(1,"성공",null);
+	}
+	
+	//회원정보
+	@GetMapping("/user/{id}")
+	public String userInfo(@PathVariable int id) {
+		// 기본은 userRepository.findById(id) 디비에서 가져와야 함.
+		// 편법은 세션값을 가져올 수도 있다.
+		
+		return "user/updateForm";
+	}
+	
 	
 	@GetMapping("/logout")
 	public String logout() {
@@ -130,7 +180,7 @@ public class UserController {
 		
 		userRepository.save(dto.toEntity());
 	
-		return Script.href("/loginForm"); // 리다이렉션(300)
+		return Script.href("/loginForm"); // 리다이렉션(300) 
 	}
 	
 }
