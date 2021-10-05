@@ -3,10 +3,38 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
-      <a href="#" class="btn btn-warning">수정</a>
-      <form action="#" method="post" style="display:inline-block">
-         <button id="btn-delete" class="btn btn-danger" type="submit">삭제</button>
-      </form>
+      <!-- 내글이면 수정과 삭제버튼 보이게 -->
+		<c:if test="${sessionScope.principal.username eq boardEntity.user.username}">
+			<a href="/board/${boardEntity.id}/updateForm" class="btn btn-warning">수정</a>
+			<button class="btn btn-danger" onclick="deleteById(${boardEntity.id})">삭제</button>
+		</c:if>
+		
+  		<script>
+			async function deleteById(id){
+				let response = await fetch("http://localhost:8080/board/"+id,{
+					method:"delete"
+				});
+				
+				//json() 함수는 문자열을 자바스크립트 오브젝트로 바꿔준다.
+				let parseResponse = await response.text();
+				console.log(parseResponse);
+				
+				if(parseResponse.code == 1 ){
+				alert("삭제성공");
+				location.href="/";
+					
+				} else{
+				alert("삭제실패");
+				location.href="/";
+					
+				}
+				
+				
+			}
+		
+		</script>   
+      
+      
       
    <br /><br />
    <div>
