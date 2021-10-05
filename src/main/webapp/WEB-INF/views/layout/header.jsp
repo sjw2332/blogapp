@@ -58,4 +58,3 @@
 <br>
 <!-- navbar 끝 -->
 
-${sessionScope.principal.username}
