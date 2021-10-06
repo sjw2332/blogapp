@@ -47,14 +47,15 @@ public class BoardController {
 	
 	
 	//댓글작성
-	@PostMapping("/board/{boardId}/comment")
+	@PostMapping("/board/{boardId}/comment") 
 	public String commentSave(@PathVariable int boardId, CommentSaveReqDto dto) {
 		
-		User principal = (User) session.getAttribute("princiapl");
+		User principal = (User) session.getAttribute("principal");
+		System.out.println(principal);
 		
 		boardService.댓글등록(boardId, dto, principal);
 		
-		return "redirect:/board/"+boardId;
+		return "redirect:/board/"+boardId; 
 	}
 	
 	

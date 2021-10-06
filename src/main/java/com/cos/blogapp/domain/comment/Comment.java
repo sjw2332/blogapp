@@ -1,5 +1,6 @@
 package com.cos.blogapp.domain.comment;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,11 +10,11 @@ import javax.persistence.ManyToOne;
 
 import com.cos.blogapp.domain.board.Board;
 import com.cos.blogapp.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,13 +25,19 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; //PK (자동증가 번호)
 	
+	@Column(nullable = false)
 	private String content;
 	
-	@JoinColumn(name="userId")
+	@JoinColumn(name = "userId")
 	@ManyToOne
 	private User user;
-	
-	@JoinColumn(name="boardId")
+
+	@JoinColumn(name = "boardId")
 	@ManyToOne
-	private Board board;
+	private Board board; // 2
+	
 }
+
+
+
+

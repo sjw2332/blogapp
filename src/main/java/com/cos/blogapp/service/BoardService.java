@@ -22,7 +22,7 @@ import com.cos.blogapp.web.dto.CommentSaveReqDto;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor 
 @Service
 public class BoardService {
 	
@@ -31,7 +31,7 @@ public class BoardService {
 	
 	
 	//db에 연결하면 무조건 서비스 연결
-	@Transactional
+	@Transactional(rollbackFor = MyAsyncNotFoundException.class)
 	public void 댓글등록(int boardId, CommentSaveReqDto dto, User principal) {
 
 		
@@ -42,6 +42,7 @@ public class BoardService {
 		Comment comment = new Comment();
 		comment.setContent(dto.getContent());
 		comment.setUser(principal);
+	//	System.out.println(principal.getUsername());
 		comment.setBoard(boardEntity);
 		
 		commentRepository.save(comment);
