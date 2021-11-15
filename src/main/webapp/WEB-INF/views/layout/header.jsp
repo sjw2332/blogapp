@@ -20,9 +20,15 @@
 
 
 </head>
+
+	
 <body>
 
+	<script>
+	//	let globalUserId="#{sessionScope.principal.id}";
+	</script>
 <!-- navbar 시작 -->
+
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <a class="navbar-brand" href="/">블로그</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">

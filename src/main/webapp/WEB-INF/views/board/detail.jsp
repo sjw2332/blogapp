@@ -4,7 +4,6 @@
 
 <div class="container">
 	<!-- 내글이면 수정과 삭제버튼 보이게 -->
-		
 	
 		<c:if test="${sessionScope.principal.username eq boardEntity.user.username}">
 			<a href="/board/${boardEntity.id}/updateForm" class="btn btn-warning">수정</a>
@@ -52,9 +51,9 @@
 	
 	<!--  댓글작성 -->
 	<div class="card">
-		<form action="/board/${boardEntity.id}/comment" method="post">
+		<form action="/board/${boardEntity.id}/comment" method="post" >
 			<div class="card-body">
-				<textarea id="reply-content" name="content" class="form-control" rows="1"></textarea>
+				<textarea id="ta-content" name="content" class="form-control" rows="1"  ></textarea>
 			</div>
 			<div class="card-footer">
 				<button type="submit" id="btn-reply-save" class="btn btn-primary">등록</button>
@@ -62,6 +61,11 @@
 		</form>
 	</div>
 	<!--  댓글작성끝 -->
+	
+
+	
+	
+	
 	<br />
 	<!-- 댓글 -->
 	<div class="card">

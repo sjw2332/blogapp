@@ -1,6 +1,5 @@
 package com.cos.blogapp.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -31,23 +30,22 @@ public class BoardService {
 	
 	
 	//db에 연결하면 무조건 서비스 연결
-	@Transactional(rollbackFor = MyAsyncNotFoundException.class)
-	public void 댓글등록(int boardId, CommentSaveReqDto dto, User principal) {
-
+	
+	
+	public void 댓글등록(int boardId, CommentSaveReqDto dto, User principal ) {
+		Board boardEntity = boardRepository.findById(boardId)
+				.orElseThrow(()-> new MyNotFoundException("해당 글을 찾을 수 없습니다."));
 		
-		Board boardEntity = boardRepository.findById(boardId).
-				orElseThrow( ()->new MyNotFoundException("게시글이 없습니다.") ); 
-		
-		//db 조회하고 넣는거라서 서비스에 있어야 되는 부분들
 		Comment comment = new Comment();
 		comment.setContent(dto.getContent());
 		comment.setUser(principal);
-	//	System.out.println(principal.getUsername());
 		comment.setBoard(boardEntity);
 		
 		commentRepository.save(comment);
 		
 	}
+	
+	
 	
 	@Transactional(rollbackFor = MyAsyncNotFoundException.class)
 	public void 게시글수정(int id, User principal, BoardSaveReqDto dto) {
