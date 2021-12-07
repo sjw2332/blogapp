@@ -24,9 +24,7 @@
 	
 <body>
 
-	<script>
-	//	let globalUserId="#{sessionScope.principal.id}";
-	</script>
+
 <!-- navbar 시작 -->
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
