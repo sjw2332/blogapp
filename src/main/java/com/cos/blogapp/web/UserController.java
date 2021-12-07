@@ -158,7 +158,7 @@ public class UserController {
 		
 		userService.회원가입(dto);
 		
-		return Script.href("/loginForm"); // 리다이렉션 (300)
+		return Script.href("/loginForm","회원가입이 성공적으로 완료되었습니다."); // 리다이렉션 (300)
 	}
 	
 }

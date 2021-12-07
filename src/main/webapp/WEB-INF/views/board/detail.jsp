@@ -78,12 +78,29 @@
 					<div>${comment.content}</div>
 					<div class="d-flex">
 						<div class="font-italic">작성자 : ${comment.user.username} &nbsp;</div>
-						<button class="badge">삭제</button>
+						<button class="badge" id="reply" onclick="deleteById(${comment.id})">삭제</button>
 					</div>
 				</li>			
 			</c:forEach>
 			<!-- 댓글목록끝 -->
 		</ul>
+		<script>
+			async function deleteById(commentId){
+				let response = await fetch("http://localhost:8080/comment/"+commentId, {
+					method:"delete"
+				});
+				
+				let parseResponse = await response.json();
+				
+				if(parseResponse.code == 1){
+					alert("댓글 삭제 성공");
+					location.reload();
+					$("#reply-"+commentId).remove();
+				}else{
+					alert("댓글 삭제에 실패하였습니다. "+parseResponse.msg);
+				}
+			}
+		</script>
 		
 	</div>
 	<!-- 댓글 -->

@@ -13,6 +13,6 @@ spring:
     url: jdbc:mariadb://localhost:3306/cosdb?serverTimezone=Asia/Seoul
     
   jpa:
-    open-in-view: true    hibernate:      ddl-auto: none #create, none
+    open-in-view: true    hibernate:      ddl-auto: create #create, none
       naming:        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
